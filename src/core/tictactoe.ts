@@ -13,6 +13,7 @@ export enum GameState {
 export class TicTacToe {
   board: Board;
   currPlayer: Player = "O";
+  otherPlayer: Player = "X";
   state: GameState = GameState.Running;
   winner?: Player;
 
@@ -35,7 +36,7 @@ export class TicTacToe {
 
     const winner = checkForWinner(this.board);
 
-    if (winner !== undefined) {
+    if (winner) {
       this.state = GameState.Victory;
       this.winner = winner;
       return;
@@ -47,6 +48,70 @@ export class TicTacToe {
     }
 
     this.currPlayer = this.currPlayer === "O" ? "X" : "O";
+    this.otherPlayer = this.currPlayer === "O" ? "X" : "O";
+  }
+
+  bestPlay() {
+    let bestScore = -Infinity;
+    let bestY!: number;
+    let bestX!: number;
+    for (let y = 0; y < 3; y++) {
+      for (let x = 0; x < 3; x++) {
+        if (this.board[y][x] === null) {
+          this.board[y][x] = this.currPlayer;
+          let score = this.minimax(0, false);
+          this.board[y][x] = null;
+          if (score > bestScore) {
+            bestScore = score;
+            bestY = y;
+            bestX = x;
+          }
+        }
+      }
+    }
+
+    this.play(bestY, bestX);
+  }
+
+  private minimax(depth: number, isCurrPlayerTurn: boolean): number {
+    const winner = checkForWinner(this.board);
+
+    if (winner) {
+      if (winner === this.currPlayer) return 10 - depth;
+      return -10 + depth;
+    }
+
+    if (this.isBoardFull()) {
+      return 0;
+    }
+
+    if (isCurrPlayerTurn) {
+      let maxScore = -Infinity;
+      for (let y = 0; y < 3; y++) {
+        for (let x = 0; x < 3; x++) {
+          if (this.board[y][x] === null) {
+            this.board[y][x] = this.currPlayer;
+            let score = this.minimax(depth + 1, false);
+            this.board[y][x] = null;
+            maxScore = Math.max(score, maxScore);
+          }
+        }
+      }
+      return maxScore;
+    } else {
+      let minScore = Infinity;
+      for (let y = 0; y < 3; y++) {
+        for (let x = 0; x < 3; x++) {
+          if (this.board[y][x] === null) {
+            this.board[y][x] = this.otherPlayer;
+            let score = this.minimax(depth + 1, true);
+            this.board[y][x] = null;
+            minScore = Math.min(score, minScore);
+          }
+        }
+      }
+      return minScore;
+    }
   }
 
   private isBoardFull(): boolean {

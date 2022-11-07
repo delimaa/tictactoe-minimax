@@ -62,6 +62,7 @@ function newGame() {
 
 function play(y: number, x: number) {
   game.value.play(y, x);
+  game.value.bestPlay();
 }
 </script>
 

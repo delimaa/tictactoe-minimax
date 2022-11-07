@@ -39,7 +39,7 @@ describe("tictactoe", () => {
 
       const winner = checkForWinner(board);
 
-      expect(winner).toEqual('O');
+      expect(winner).toEqual("O");
     });
 
     it("detect no winner", () => {
@@ -188,7 +188,28 @@ describe("tictactoe", () => {
     expect(game.board[2][0]).toBe(null);
   });
 
-  describe("best move", () => {
-    it("play best move 1", () => {});
+  describe("best play", () => {
+    it("best play 1", () => {
+      game.play(0, 0);
+      game.play(1, 0);
+      game.play(1, 1);
+      game.play(2, 0);
+      game.bestPlay();
+
+      expect(game.board[2][2]).toBe("O");
+      expect(game.winner).toBe("O");
+    });
+
+    it("best play 2", () => {
+      game.play(0, 0);
+      game.play(2, 0);
+      game.play(0, 1);
+      game.play(1, 1);
+      game.play(1, 0);
+      game.bestPlay();
+
+      expect(game.board[0][2]).toBe("X");
+      expect(game.winner).toBe("X");
+    });
   });
 });
