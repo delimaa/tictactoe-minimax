@@ -1,6 +1,6 @@
 # Tic Tac Toe (tictactoe)
 
-A simple Tic Tac Toe made using Minimax algorithm
+A basic Tic Tac Toe with unbeatable AI using minimax algorithm
 
 ## Install the dependencies
 ```bash
@@ -13,12 +13,3 @@ npm install
 ```bash
 quasar dev
 ```
-
-
-### Build the app for production
-```bash
-quasar build
-```
-
-### Customize the configuration
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
